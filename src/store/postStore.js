@@ -22,10 +22,10 @@ const initialPosts = [
 ]
 const getPostsErrorMessage = (error) => {
   if (error.code === 'permission-denied') {
-    return '게시글 목록을 읽을 권한이 없습니다. Firebase rules error'
+    return '게시글 권한이 없습니다. Firebase rules를 확인해 주세요.'
   }
 
-  return error.message
+  return error.message || '게시글 요청에 실패했습니다.'
 }
 
 const usePostStore = create((set) => ({
@@ -41,8 +41,9 @@ const usePostStore = create((set) => ({
       const posts = await fetchPostsFromFirestore()
       set({ posts, loading: false }) //posts: posts이면 그냥 posts라고 쓰는게 맞다
     } catch (error) {
-      set({ error: getPostsErrorMessage(error), loading: false })
-      throw error
+      const message = getPostsErrorMessage(error)
+      set({ error: message, loading: false })
+      throw new Error(message)
     }
   },
 
@@ -58,8 +59,9 @@ const usePostStore = create((set) => ({
         loading: false,
       }))
     } catch (error) {
-      set({ error: getPostsErrorMessage(error), loading: false })
-      throw error
+      const message = getPostsErrorMessage(error)
+      set({ error: message, loading: false })
+      throw new Error(message)
     }
   },
 
@@ -90,8 +92,9 @@ const usePostStore = create((set) => ({
         loading: false,
       }))
     } catch (error) {
-      set({ error: getPostsErrorMessage(error), loading: false })
-      throw error
+      const message = getPostsErrorMessage(error)
+      set({ error: message, loading: false })
+      throw new Error(message)
     }
   },
 //게시글 수정
@@ -104,8 +107,9 @@ const usePostStore = create((set) => ({
         loading: false,
       }))
     }catch(error){
-      set({ error: getPostsErrorMessage(error), loading: false })
-      throw error
+      const message = getPostsErrorMessage(error)
+      set({ error: message, loading: false })
+      throw new Error(message)
     }
     // try {
     //   const savedPost = await updatePostInFireStore(updatedPost)

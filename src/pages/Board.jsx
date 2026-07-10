@@ -1,13 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Login from '../components/Login'
 import PodoCharacter from '../components/PodoCharacter'
 import PostForm from '../components/PostForm'
 import PostList from '../components/PostList'
+import usePostStore from '../store/postStore'
 import basket from '../assets/basket.svg'
 import grape from '../assets/grape.svg'
 import styles from './Board.module.scss'
 
 const Board = () => {
+  const fetchPosts = usePostStore((state) => state.fetchPosts)
+
+  useEffect(() => {
+    fetchPosts().catch(() => {})
+  }, [fetchPosts])
+
   return (
     <main className={styles.main}>
       <div className={styles.grapeWrap} aria-hidden="true">
