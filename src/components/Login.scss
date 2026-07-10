@@ -1,0 +1,100 @@
+.loginPanel{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    min-width: 280px;
+}
+
+.loginIcons{
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 8px;
+    width: min(300px, 100%);
+    margin-bottom: -4px;
+}
+
+.loginIcon{
+    width: clamp(38px, 5vw, 52px);
+    height: clamp(38px, 5vw, 52px);
+    object-fit: contain;
+    cursor: pointer;
+    transition: all 0.3s;
+    &:hover{
+        transform: translateY(-10px);
+    }
+    filter: drop-shadow(0 6px 8px rgba(128, 100, 188, 0.18));
+}
+
+.loginIcon2,
+.loginIcon4{
+    transform: translateY(-6px);
+}
+
+.loginIcon3{
+    transform: translateY(-12px);
+}
+
+.loginPanel h2{
+    color: rgb(200, 159, 211);
+    font-size: 34px;
+    font-weight: 800;
+    margin: 0 0 22px;
+}
+
+.loginUserEmail{
+    width: 280px;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 14px;
+    border: 2px solid rgb(200, 159, 211);
+    border-radius: 15px;
+    background-color: rgba(255, 255, 255, 0.92);
+    color: #8064BC;
+    font-weight: 900;
+    text-align: center;
+    overflow-wrap: anywhere;
+    box-shadow: 0 6px 14px rgba(128, 100, 188, 0.12);
+}
+
+.loginPanel form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+}
+
+.loginPanel input{
+    width: 280px;
+    height: 44px;
+    border: 2px solid rgb(200, 159, 211);
+    border-radius: 15px;
+    padding: 0 18px;
+    font-weight: 700;
+    box-sizing: border-box;
+}
+
+.loginPanel button{
+    width: 280px;
+    height: 42px;
+    border: none;
+    border-radius: 18px;
+    background-color: rgb(200, 159, 211);
+    color: white;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.loginPanel button:hover{
+    background-color: #8064BC;
+}
+
+@media (max-width: 420px){
+    .loginIcons{
+        gap: 5px;
+    }
+}

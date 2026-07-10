@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>React + Zustand 조립 지도</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 14mm;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: #172033;
+      font-family: "Malgun Gothic", "Apple SD Gothic Neo", Arial, sans-serif;
+      line-height: 1.6;
+      background: #ffffff;
+    }
+
+    h1, h2, h3, p {
+      margin-top: 0;
+    }
+
+    h1 {
+      font-size: 32px;
+      line-height: 1.25;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      font-size: 22px;
+      margin: 0 0 14px;
+      color: #13233f;
+      border-bottom: 3px solid #2f66f5;
+      padding-bottom: 7px;
+    }
+
+    h3 {
+      font-size: 16px;
+      margin: 18px 0 8px;
+      color: #20304d;
+    }
+
+    code {
+      font-family: Consolas, "Courier New", monospace;
+      background: #eef3ff;
+      border: 1px solid #d7e2ff;
+      border-radius: 5px;
+      padding: 1px 5px;
+    }
+
+    pre {
+      white-space: pre-wrap;
+      margin: 10px 0;
+      padding: 12px;
+      border: 1px solid #d8dfed;
+      border-radius: 8px;
+      background: #f7f9fd;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .page {
+      page-break-after: always;
+      min-height: 260mm;
+      padding: 2mm 0;
+    }
+
+    .page:last-child {
+      page-break-after: auto;
+    }
+
+    .cover {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 260mm;
+    }
+
+    .subtitle {
+      font-size: 18px;
+      color: #53627c;
+      margin-bottom: 28px;
+    }
+
+    .hint {
+      padding: 12px 14px;
+      border-left: 5px solid #2f66f5;
+      background: #f3f7ff;
+      border-radius: 8px;
+      margin: 12px 0 18px;
+    }
+
+    .legend {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin: 18px 0;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+    }
+
+    .dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: inline-block;
+      background: #ff4646;
+    }
+
+    .square {
+      width: 28px;
+      height: 28px;
+      display: inline-block;
+      background: #342cf4;
+      border-radius: 3px;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: #e8f4ef;
+      color: #146247;
+      font-weight: 700;
+    }
+
+    .star {
+      width: 34px;
+      height: 34px;
+      display: inline-block;
+      background: #ff8a00;
+      clip-path: polygon(50% 0%, 61% 34%, 98% 35%, 68% 56%, 79% 91%, 50% 70%, 21% 91%, 32% 56%, 2% 35%, 39% 34%);
+    }
+
+    .diagram {
+      border: 1px solid #d9e1ef;
+      border-radius: 10px;
+      padding: 16px;
+      background: #fbfcff;
+      margin: 12px 0 18px;
+    }
+
+    .row {
+      display: flex;
+      align-items: stretch;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .center {
+      align-items: center;
+      justify-content: center;
+    }
+
+    .box {
+      border: 2px solid #91a7d9;
+      border-radius: 8px;
+      padding: 10px 12px;
+      background: #ffffff;
+      min-width: 130px;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .box.small {
+      min-width: 95px;
+      padding: 8px 10px;
+      font-size: 13px;
+    }
+
+    .box.blue {
+      border-color: #2f66f5;
+      background: #eef4ff;
+    }
+
+    .box.green {
+      border-color: #19a974;
+      background: #ecfbf5;
+    }
+
+    .box.orange {
+      border-color: #ff9f1c;
+      background: #fff6e8;
+    }
+
+    .box.red {
+      border-color: #ff5c5c;
+      background: #fff1f1;
+    }
+
+    .arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 34px;
+      color: #53627c;
+      font-weight: 900;
+      font-size: 26px;
+    }
+
+    .down {
+      text-align: center;
+      font-weight: 900;
+      color: #53627c;
+      font-size: 24px;
+      line-height: 1.1;
+      margin: 4px 0;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .card {
+      border: 1px solid #d9e1ef;
+      border-radius: 8px;
+      padding: 12px;
+      background: #ffffff;
+    }
+
+    .card h3 {
+      margin-top: 0;
+    }
+
+    .folder {
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 13px;
+      background: #f7f9fd;
+      border: 1px solid #d8dfed;
+      border-radius: 8px;
+      padding: 12px 14px;
+      line-height: 1.55;
+    }
+
+    .flowline {
+      display: grid;
+      grid-template-columns: 1fr 36px 1fr 36px 1fr;
+      align-items: center;
+      gap: 8px;
+      margin: 12px 0;
+    }
+
+    .note-list {
+      padding-left: 20px;
+      margin-top: 8px;
+    }
+
+    .note-list li {
+      margin-bottom: 6px;
+    }
+
+    .mini {
+      color: #66758f;
+      font-size: 13px;
+    }
+
+    .danger {
+      border-left: 5px solid #ff5c5c;
+      background: #fff3f3;
+      padding: 10px 12px;
+      border-radius: 8px;
+      margin: 10px 0;
+    }
+
+    .ok {
+      border-left: 5px solid #19a974;
+      background: #effbf6;
+      padding: 10px 12px;
+      border-radius: 8px;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <section class="page cover">
+    <h1>React + Zustand<br />조립 지도</h1>
+    <p class="subtitle">현재 hospital 프로젝트를 도형으로 이해하는 PDF</p>
+    <div class="legend">
+      <div class="legend-item"><span class="dot"></span> React 컴포넌트: 화면 조각</div>
+      <div class="legend-item"><span class="square"></span> Zustand store: 공용 데이터 창고</div>
+      <div class="legend-item"><span class="star"></span> Router: 주소에 따라 화면 고르는 장치</div>
+    </div>
+    <div class="hint">
+      React는 “조립형 화면 만들기”라고 보면 됩니다. 작은 조각을 만들고, 그 조각들을 끼워서 큰 화면을 만듭니다.
+      Zustand는 여러 조각이 같이 쓰는 데이터를 한곳에 모아두는 작은 창고입니다.
+    </div>
+  </section>
+
+  <section class="page">
+    <h2>1. 전체 그림</h2>
+    <p>브라우저가 프로젝트를 읽으면 아래 순서로 화면이 조립됩니다.</p>
+    <div class="diagram">
+      <div class="row center">
+        <div class="box">index.html</div>
+        <div class="arrow">→</div>
+        <div class="box blue">src/main.jsx</div>
+        <div class="arrow">→</div>
+        <div class="box blue">App.jsx</div>
+      </div>
+      <div class="down">↓</div>
+      <div class="row center">
+        <div class="box orange">주소 /</div>
+        <div class="arrow">→</div>
+        <div class="box green">Board.jsx</div>
+        <div class="arrow">→</div>
+        <div class="box small">PostForm</div>
+        <div class="box small">PostList</div>
+      </div>
+      <div class="down">↓</div>
+      <div class="row center">
+        <div class="box orange">주소 /detail/:id</div>
+        <div class="arrow">→</div>
+        <div class="box green">Detail.jsx</div>
+      </div>
+    </div>
+    <p><span class="pill">감각</span> App은 전체 스위치박스입니다. 주소가 <code>/</code>이면 게시판, <code>/detail/2</code>이면 2번 글 상세 화면을 보여줍니다.</p>
+
+    <h3>폴더는 이렇게 보면 됩니다</h3>
+    <div class="folder">hospital
+├─ index.html                 브라우저가 처음 읽는 HTML
+├─ package.json               실행 명령과 설치된 라이브러리 목록
+├─ vite.config.js             Vite 설정
+└─ src
+   ├─ main.jsx                React 시작 버튼
+   ├─ App.jsx                 주소에 따라 페이지 선택
+   ├─ pages
+   │  ├─ Board.jsx            메인 게시판 페이지
+   │  └─ Detail.jsx           상세/수정 페이지
+   ├─ components
+   │  ├─ PostForm.jsx         글쓰기 입력 폼
+   │  └─ PostList.jsx         글 목록 테이블
+   └─ store
+      └─ postStore.js         Zustand 데이터 창고</div>
+  </section>
+
+  <section class="page">
+    <h2>2. React 컴포넌트란?</h2>
+    <p>컴포넌트는 화면 부품입니다. 함수 하나가 HTML처럼 생긴 JSX를 반환하면, React가 그것을 화면에 그립니다.</p>
+    <div class="diagram">
+      <div class="row center">
+        <span class="dot"></span>
+        <div class="box">PostForm.jsx</div>
+        <div class="arrow">=</div>
+        <div class="box small">제목 input</div>
+        <div class="box small">작성자 input</div>
+        <div class="box small">내용 textarea</div>
+        <div class="box small">등록 button</div>
+      </div>
+    </div>
+    <pre>const Board = () =&gt; {
+  return (
+    &lt;main&gt;
+      &lt;PostForm /&gt;
+      &lt;PostList /&gt;
+    &lt;/main&gt;
+  )
+}</pre>
+    <p>위 코드는 “Board라는 큰 판 안에 PostForm과 PostList 부품을 끼운다”는 뜻입니다.</p>
+
+    <div class="grid-3">
+      <div class="card">
+        <h3>Board</h3>
+        <p>큰 게시판 화면입니다. 글쓰기 폼과 목록을 배치합니다.</p>
+      </div>
+      <div class="card">
+        <h3>PostForm</h3>
+        <p>사용자가 새 글 내용을 입력합니다. 등록 버튼을 누르면 store에 글을 넣습니다.</p>
+      </div>
+      <div class="card">
+        <h3>PostList</h3>
+        <p>store에 있는 글 목록을 표로 보여줍니다. 삭제 버튼도 여기 있습니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="page">
+    <h2>3. Router는 주소 안내원</h2>
+    <p><code>react-router-dom</code>은 현재 주소를 보고 어떤 페이지 컴포넌트를 보여줄지 정합니다.</p>
+    <div class="diagram">
+      <div class="flowline">
+        <div class="box orange">브라우저 주소</div>
+        <div class="arrow">→</div>
+        <div class="box blue">Routes / Route</div>
+        <div class="arrow">→</div>
+        <div class="box green">선택된 페이지</div>
+      </div>
+      <div class="row center">
+        <div class="box small">/</div>
+        <div class="arrow">→</div>
+        <div class="box small">Board</div>
+        <div class="box small">/detail/2</div>
+        <div class="arrow">→</div>
+        <div class="box small">Detail</div>
+      </div>
+    </div>
+    <pre>&lt;Routes&gt;
+  &lt;Route path='/' element={&lt;Board /&gt;} /&gt;
+  &lt;Route path='/detail/:id' element={&lt;Detail /&gt;} /&gt;
+&lt;/Routes&gt;</pre>
+    <p><code>:id</code>는 빈칸입니다. <code>/detail/2</code>로 들어오면 Detail 안에서 <code>useParams()</code>가 <code>id = "2"</code>를 꺼내줍니다.</p>
+  </section>
+
+  <section class="page">
+    <h2>4. Zustand는 공용 데이터 창고</h2>
+    <p>예전 방식은 부모 App이 데이터를 들고 자식에게 props로 계속 내려줬습니다. Zustand를 쓰면 필요한 컴포넌트가 store에서 직접 꺼내 씁니다.</p>
+    <div class="diagram">
+      <div class="row center">
+        <div class="box red">예전 props 방식</div>
+        <div class="arrow">:</div>
+        <div class="box small">App</div>
+        <div class="arrow">→</div>
+        <div class="box small">Board</div>
+        <div class="arrow">→</div>
+        <div class="box small">PostList</div>
+      </div>
+      <div class="down">대신</div>
+      <div class="row center">
+        <span class="square"></span>
+        <div class="box blue">postStore.js</div>
+        <div class="arrow">↔</div>
+        <div class="box small">PostForm</div>
+        <div class="box small">PostList</div>
+        <div class="box small">Detail</div>
+      </div>
+    </div>
+    <pre>const usePostStore = create((set) =&gt; ({
+  posts: [...],
+  addPost: (newPost) =&gt; { ... },
+  deletePost: (id) =&gt; { ... },
+  updatePost: (updatePost) =&gt; { ... },
+}))</pre>
+    <p><span class="pill">감각</span> <code>posts</code>는 실제 글 목록이고, <code>addPost</code>, <code>deletePost</code>, <code>updatePost</code>는 창고 안의 데이터를 바꾸는 버튼입니다.</p>
+  </section>
+
+  <section class="page">
+    <h2>5. 현재 데이터 흐름</h2>
+    <h3>Create: 글 등록</h3>
+    <div class="diagram">
+      <div class="row center">
+        <div class="box green">PostForm</div>
+        <div class="arrow">입력값</div>
+        <div class="box small">title / writer / content</div>
+        <div class="arrow">→</div>
+        <div class="box blue">addPost(newPost)</div>
+        <div class="arrow">→</div>
+        <div class="box blue">posts 앞에 추가</div>
+      </div>
+    </div>
+    <pre>const addPost = usePostStore((state) =&gt; state.addPost)
+addPost({ title, writer, content })</pre>
+
+    <h3>Read: 목록 보기</h3>
+    <div class="diagram">
+      <div class="row center">
+        <div class="box blue">posts 배열</div>
+        <div class="arrow">→</div>
+        <div class="box green">PostList</div>
+        <div class="arrow">→</div>
+        <div class="box small">posts.map(...)</div>
+        <div class="arrow">→</div>
+        <div class="box small">table 행 반복</div>
+      </div>
+    </div>
+
+    <h3>Delete: 삭제</h3>
+    <div class="diagram">
+      <div class="row center">
+        <div class="box small">Delete 버튼</div>
+        <div class="arrow">→</div>
+        <div class="box blue">deletePost(id)</div>
+        <div class="arrow">→</div>
+        <div class="box small">filter</div>
+        <div class="arrow">→</div>
+        <div class="box small">해당 id 제외</div>
+      </div>
+    </div>
+
+    <h3>Update: 수정</h3>
+    <div class="diagram">
+      <div class="row center">
+        <div class="box green">Detail</div>
+        <div class="arrow">→</div>
+        <div class="box small">수정 input</div>
+        <div class="arrow">→</div>
+        <div class="box blue">updatePost</div>
+        <div class="arrow">→</div>
+        <div class="box small">map으로 같은 id 교체</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page">
+    <h2>6. 파일별로 한 문장씩</h2>
+    <div class="grid-2">
+      <div class="card">
+        <h3>main.jsx</h3>
+        <p>React 앱을 <code>index.html</code>의 <code>#root</code>에 끼웁니다. <code>BrowserRouter</code>로 주소 기능도 감쌉니다.</p>
+      </div>
+      <div class="card">
+        <h3>App.jsx</h3>
+        <p>주소가 <code>/</code>인지 <code>/detail/:id</code>인지 보고 보여줄 페이지를 고릅니다.</p>
+      </div>
+      <div class="card">
+        <h3>Board.jsx</h3>
+        <p>메인 페이지입니다. 현재는 <code>PostForm</code>과 <code>PostList</code>를 배치합니다.</p>
+      </div>
+      <div class="card">
+        <h3>PostForm.jsx</h3>
+        <p>입력칸 3개를 <code>useState</code>로 기억하고, 등록 시 <code>addPost</code>를 호출합니다.</p>
+      </div>
+      <div class="card">
+        <h3>PostList.jsx</h3>
+        <p>Zustand에서 <code>posts</code>를 꺼내 표로 보여주고, 삭제 시 <code>deletePost</code>를 호출합니다.</p>
+      </div>
+      <div class="card">
+        <h3>Detail.jsx</h3>
+        <p>URL의 id를 읽고 <code>posts.find</code>로 글 하나를 찾습니다. 수정 저장 시 <code>updatePost</code>를 호출합니다.</p>
+      </div>
+      <div class="card">
+        <h3>postStore.js</h3>
+        <p>글 목록과 CRUD 함수를 담는 공용 창고입니다. 여러 컴포넌트가 여기서 데이터를 꺼냅니다.</p>
+      </div>
+      <div class="card">
+        <h3>package.json</h3>
+        <p><code>npm run dev</code>, <code>npm run build</code> 같은 명령과 React/Zustand 설치 목록이 있습니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="page">
+    <h2>7. 자주 헷갈린 지점</h2>
+    <div class="danger">
+      <strong>props 방식과 Zustand 방식을 섞으면 헷갈립니다.</strong><br />
+      Zustand를 쓰는 컴포넌트는 보통 <code>usePostStore</code>로 직접 꺼내 쓰고, 중간 컴포넌트가 굳이 props로 전달하지 않아도 됩니다.
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <h3>없는 변수 사용</h3>
+        <pre>&lt;PostForm addPost={addPost} /&gt;</pre>
+        <p>위처럼 쓰려면 같은 파일 안에 <code>addPost</code>가 선언되어 있어야 합니다.</p>
+      </div>
+      <div class="card">
+        <h3>props를 안 받았는데 props 사용</h3>
+        <pre>const PostList = () =&gt; {
+  props.posts.length
+}</pre>
+        <p><code>props</code>를 쓰려면 <code>const PostList = (props)</code>처럼 받아야 합니다. Zustand로 직접 꺼냈다면 <code>posts.length</code>를 씁니다.</p>
+      </div>
+      <div class="card">
+        <h3>배열과 글 하나 구분</h3>
+        <pre>const posts = state.posts
+const post = posts.find(...)</pre>
+        <p><code>posts</code>는 여러 글이 든 배열, <code>post</code>는 그중 글 하나입니다.</p>
+      </div>
+      <div class="card">
+        <h3>선언 전에 사용</h3>
+        <pre>const [title] = useState(post.title)
+const post = ...</pre>
+        <p>이 순서는 안 됩니다. <code>post</code>를 먼저 찾고 나서 <code>useState</code> 초기값으로 써야 합니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="page">
+    <h2>8. 머릿속 모델</h2>
+    <div class="diagram">
+      <div class="row center">
+        <div class="box blue">postStore</div>
+      </div>
+      <div class="down">↑ ↓</div>
+      <div class="row center">
+        <div class="box green">PostForm<br /><span class="mini">addPost</span></div>
+        <div class="box green">PostList<br /><span class="mini">posts / deletePost</span></div>
+        <div class="box green">Detail<br /><span class="mini">posts / updatePost</span></div>
+      </div>
+      <div class="down">↑</div>
+      <div class="row center">
+        <div class="box orange">App Router가 어느 페이지를 보여줄지만 결정</div>
+      </div>
+    </div>
+    <div class="ok">
+      지금 프로젝트를 이해하는 핵심 문장:
+      <br />
+      <strong>App은 길 안내, Board/Detail은 화면, PostForm/PostList는 작은 부품, postStore는 데이터 창고입니다.</strong>
+    </div>
+    <h3>공부 순서 추천</h3>
+    <ol>
+      <li><code>main.jsx</code>에서 앱이 시작되는 모양 보기</li>
+      <li><code>App.jsx</code>에서 주소와 페이지 연결 보기</li>
+      <li><code>Board.jsx</code>에서 부품 조립 보기</li>
+      <li><code>postStore.js</code>에서 데이터와 함수 이름 보기</li>
+      <li><code>PostForm.jsx</code>, <code>PostList.jsx</code>, <code>Detail.jsx</code>에서 store를 꺼내 쓰는 부분 찾기</li>
+    </ol>
+  </section>
+</body>
+</html>

@@ -1,0 +1,36 @@
+.app {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+section,
+main {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+header{
+  width: 100%;
+  height: 60px;
+  background-color:rgba(200, 159, 211, 0.2);
+  border-bottom: 2px solid rgb(200, 159, 211);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(2px);
+  h2{
+    color: rgb(200, 159, 211);
+    font-weight: bold;
+  }
+}
+body {
+  /* 배경색을 살짝 깔고 */
+  background-color: #F8F5FA;
+  
+  /* 땡땡이 무늬 추가 */
+  background-image: radial-gradient(#d1c4e9 1px, transparent 1px);
+  background-size: 20px 20px; /* 도트 간격 */
+}

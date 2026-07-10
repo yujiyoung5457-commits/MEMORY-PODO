@@ -1,0 +1,142 @@
+.character{
+    position: absolute;
+    right: clamp(36px, 8vw, 120px);
+    top: 390px;
+    width: clamp(180px, 16vw, 260px);
+    aspect-ratio: 1;
+    pointer-events: none;
+    --eye-x: 0px;
+    --eye-y: 0px;
+}
+
+.character img{
+    position: absolute;
+    display: block;
+    user-select: none;
+}
+
+.body{
+    inset: 0;
+    width: 100%;
+    z-index: 2;
+    animation: bodyBounce 3s ease-in-out infinite;
+}
+
+.eyes{
+    left: 25.8%;
+    top: 34%;
+    width: 48.5%;
+    z-index: 3;
+    animation: eyesLook 2.2s ease-in-out infinite;
+    transition: transform 0.18s ease-out;
+}
+
+.tracking .eyes{
+    animation: none;
+    transform: translate(var(--eye-x), var(--eye-y));
+}
+
+.talk{
+    left: 49%;
+    top: -50%;
+    width: 65%;
+    z-index: 4;
+    opacity: 0.92;
+    animation: talkFloat 2.8s ease-in-out infinite;
+}
+
+.arm{
+    width: 30.5%;
+    z-index: 1;
+    animation: armWave 2.4s ease-in-out infinite;
+}
+
+.leftArm{
+    left: -23%;
+    top: 48%;
+    transform-origin: 85% 45%;
+}
+
+.rightArm{
+    right: -23%;
+    top: 48%;
+    transform-origin: 15% 45%;
+    animation-delay: -1.2s;
+}
+
+.leg{
+    width: 24.5%;
+    z-index: 1;
+    animation: legKick 2.8s ease-in-out infinite;
+}
+
+.leftLeg{
+    left: 19%;
+    bottom: -16%;
+    transform-origin: 50% 10%;
+}
+
+.rightLeg{
+    right: 19%;
+    bottom: -16%;
+    transform-origin: 50% 10%;
+    animation-delay: -1.4s;
+}
+
+@keyframes bodyBounce{
+    0%, 100%{
+        transform: translateY(0);
+    }
+    50%{
+        transform: translateY(-6px);
+    }
+}
+
+@keyframes eyesLook{
+    0%, 100%{
+        transform: translateX(0);
+    }
+    35%{
+        transform: translateX(-6px);
+    }
+    70%{
+        transform: translateX(5px);
+    }
+}
+
+@keyframes talkFloat{
+    0%, 100%{
+        transform: translateY(0) rotate(2deg);
+    }
+    50%{
+        transform: translateY(-8px) rotate(-4deg);
+    }
+}
+
+@keyframes armWave{
+    0%, 100%{
+        transform: rotate(0deg) translateY(0);
+    }
+    50%{
+        transform: rotate(-8deg) translateY(-5px);
+    }
+}
+
+@keyframes legKick{
+    0%, 100%{
+        transform: rotate(0deg) translateY(0);
+    }
+    50%{
+        transform: rotate(7deg) translateY(6px);
+    }
+}
+
+@media (max-width: 1040px){
+    .character{
+        position: relative;
+        right: auto;
+        top: auto;
+        margin-top: 40px;
+        width: 190px;
+    }
+}

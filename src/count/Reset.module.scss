@@ -1,0 +1,15 @@
+.btn{
+    //   width: 70%;
+    height: 35px;
+    text-align: center;
+    border-radius: 15px;
+    background-color: rgb(200, 159, 211);
+    border: none;
+    padding: 6px;
+    color: white;
+    transition: all 0.3s;
+}
+
+.btn:hover{
+    background-color: #8064BC;
+}
